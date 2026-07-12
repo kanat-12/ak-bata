@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>АК БАТА — онлайн-бронирование</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full" defer></script>
+</head>
+
+<body>
+  <header class="site-header" id="home">
+    <nav class="navbar">
+      <div class="container nav-inner">
+        <a class="brand" href="#home">
+          <div class="brand-mark">АБ</div>
+          <div>
+            <h1>АК БАТА</h1>
+            <p>ресторан · 2 этажа · 5 кабинок</p>
+          </div>
+        </a>
+
+        <div class="nav-links" id="navLinks">
+          <a href="#about">О ресторане</a>
+          <a href="#menu">Меню</a>
+          <a href="#hall">Выбор места</a>
+          <a href="#booking">Бронирование</a>
+          <a href="#paymentInfo">Оплата</a>
+          <a href="#branches">Филиалы</a>
+          <a href="#vacancies">Вакансии</a>
+          <a href="#contacts">Контакты</a>
+        </div>
+
+        <div class="nav-actions">
+          <button class="btn btn-outline" type="button" id="openLoginBtn">Вход</button>
+          <button class="btn btn-primary" type="button" id="openRegisterBtn">Регистрация</button>
+          <button class="btn btn-primary hidden" type="button" id="adminPanelBtn">Админ-панель</button>
+          <button class="burger" id="burgerBtn" type="button">☰</button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container hero">
+      <div>
+        <div class="hero-badge">✓ Онлайн-бронирование столиков и кабинок</div>
+        <h2>Ресторан «АК БАТА» — 2 этажа и 5 отдельных кабинок</h2>
+        <p>
+          Выбирайте блюда из меню, бронируйте конкретный столик или одну из 5 отдельных кабинок,
+          смотрите филиалы на карте 2GIS и отправляйте заявку онлайн.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#hall">Выбрать место</a>
+          <a class="btn btn-outline" href="#menu">Смотреть меню</a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat"><b>4</b><span>филиала</span></div>
+          <div class="hero-stat"><b>2</b><span>этажа</span></div>
+          <div class="hero-stat"><b>5</b><span>отдельных кабинок</span></div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="hero-card-img"></div>
+        <div class="availability">
+          <div><span>1 этаж · основной зал</span><b>18 свободно</b></div>
+          <div><span>2 этаж</span><b>7 столов</b></div>
+          <div><span>Отдельные кабинки</span><b>5 кабинок</b></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="about">
+      <div class="container about-grid">
+        <div class="about-photo"></div>
+        <div class="about-card">
+          <span class="eyebrow">О ресторане</span>
+          <h3>Уютная атмосфера, национальная кухня и отдельные кабинки</h3>
+          <p>
+            «АК БАТА» — ресторан для семейных ужинов, дней рождения и встреч с друзьями.
+            В ресторане 2 этажа, 5 отдельных кабинок и основной зал.
+            Можно заранее выбрать столик, заказать блюда и оставить пожелания для администратора.
+          </p>
+
+          <div class="feature-grid">
+            <div class="feature"><b>🍽</b><span>Национальная и европейская кухня</span></div>
+            <div class="feature"><b>🏮</b><span>5 отдельных кабинок для приватного отдыха</span></div>
+            <div class="feature"><b>🏢</b><span>2 этажа: основной зал и отдельные зоны</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="menu">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Меню</span>
+          <h2>Меню ресторана «АК БАТА»</h2>
+          <p>Поиск работает по названию блюда, категории, описанию, составу и тегам.</p>
+        </div>
+
+        <div class="menu-panel">
+          <div class="menu-controls">
+            <input class="search-input" id="menuSearch" type="search" placeholder="Поиск: плов, салат, чай, халяль..." />
+
+            <select class="sort-select" id="menuSort">
+              <option value="default">Сортировка</option>
+              <option value="priceAsc">Сначала дешевые</option>
+              <option value="priceDesc">Сначала дорогие</option>
+              <option value="nameAsc">По названию</option>
+            </select>
+          </div>
+
+          <div class="menu-categories" id="menuCategories"></div>
+          <div class="menu-tags" id="menuTags"></div>
+          <div class="menu-grid" id="menuGrid"></div>
+
+          <div class="cart-summary">
+            <h3>Предварительный заказ</h3>
+            <div id="cartList">Пока блюда не выбраны.</div>
+            <div class="cart-total" id="cartTotal">Итого: 0 сом</div>
+            <button class="btn btn-primary" type="button" id="goBookingFromCart">Перейти к бронированию</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section video-section" id="hallVideo">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Видео</span>
+          <h2>Обзор зала перед выбором места</h2>
+          <p>Посмотрите обзор зала, чтобы выбрать удобный столик или кабинку.</p>
+        </div>
+
+        <div class="video-card">
+          <video class="hall-video" controls preload="metadata" playsinline>
+            <source src="video/Download.mp4" type="video/mp4" />
+            Ваш браузер не поддерживает видео. Скачайте файл и откройте его локально.
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hall-section" id="hall">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Выбор места</span>
+          <h2>Схема зала и список мест</h2>
+          <p>Можно выбрать столик на схеме вида сверху или в списке карточек.</p>
+        </div>
+
+        <div class="hall-toolbar">
+          <div class="hall-switch">
+            <button class="hall-switch-btn active" type="button" data-view="scheme">Схема</button>
+            <button class="hall-switch-btn" type="button" data-view="list">Список</button>
+          </div>
+
+          <div class="hall-legend">
+            <span><i class="legend-dot free"></i> Свободно</span>
+            <span><i class="legend-dot vip"></i> VIP</span>
+            <span><i class="legend-dot booked"></i> Занято</span>
+          </div>
+        </div>
+
+        <div class="hall-view active" id="schemeView">
+          <div class="hall-map-shell">
+            <div class="hall-map-header">
+              <div>
+                <h3>Основной зал</h3>
+                <p>Вид сверху · выберите свободный столик или кабинку</p>
+              </div>
+              <div class="hall-map-count" id="freeSeatsCount">Свободных мест: 0</div>
+            </div>
+
+            <div class="hall-map" id="hallMap">
+              <div class="hall-zone-label" style="top: 18px; left: 24px;">Основной зал</div>
+              <div class="hall-zone-label" style="top: 18px; right: 72px;">VIP-кабинки</div>
+              <div class="wall-line wall-a"></div>
+              <div class="wall-line wall-b"></div>
+              <div class="wall-line wall-c"></div>
+              <div class="stairs"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hall-view" id="listView">
+          <div class="hall-list" id="hallList"></div>
+        </div>
+
+        <div class="selected-seat-box" id="selectedSeatBox">
+          <div>
+            <h3>Место не выбрано</h3>
+            <p>Нажмите на свободный столик или кабинку на схеме.</p>
+          </div>
+          <button class="btn btn-primary hidden" type="button" id="useSeatBtn">Выбрать для брони</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="booking">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Бронирование</span>
+          <h2>Оставить заявку на бронь</h2>
+          <p>После отправки появится номер заявки. Данные сохраняются в браузере как демо-база.</p>
+        </div>
+
+        <div class="booking-grid">
+          <div class="booking-form-card">
+            <form id="bookingForm" class="form-grid">
+              <input id="clientName" type="text" placeholder="Ваше имя" required />
+              <input id="clientPhone" type="tel" placeholder="Телефон" required />
+
+              <select id="bookingBranch" required>
+                <option value="">Выберите филиал</option>
+              </select>
+
+              <select id="visitReason" required>
+                <option value="">Повод визита</option>
+                <option>Семейный ужин</option>
+                <option>День рождения</option>
+                <option>Семейное мероприятие</option>
+                <option>Встреча</option>
+                <option>Другое</option>
+              </select>
+
+              <input id="bookingDate" type="date" required />
+
+              <select id="bookingTime" required>
+                <option value="">Время</option>
+                <option>12:00</option>
+                <option>14:00</option>
+                <option>16:00</option>
+                <option>18:00</option>
+                <option>20:00</option>
+                <option>22:00</option>
+              </select>
+
+              <input id="guestCount" type="number" min="1" placeholder="Количество гостей" required />
+              <input id="selectedSeatInput" type="text" placeholder="Выбранное место" readonly required />
+
+              <select id="prepayment" class="field-full" required>
+                <option value="">Предоплата</option>
+                <option>Задаток 500 сом</option>
+                <option>Задаток 1000 сом</option>
+                <option>Полная оплата</option>
+              </select>
+
+              <textarea id="bookingComment" class="field-full" placeholder="Комментарий к брони"></textarea>
+
+              <button class="btn btn-primary field-full" type="submit">Отправить заявку</button>
+            </form>
+          </div>
+
+          <div class="booking-summary">
+            <h3>Итог бронирования</h3>
+            <div class="summary-row"><span>Филиал</span><b id="sumBranch">Не выбрано</b></div>
+            <div class="summary-row"><span>Дата</span><b id="sumDate">Не выбрано</b></div>
+            <div class="summary-row"><span>Время</span><b id="sumTime">Не выбрано</b></div>
+            <div class="summary-row"><span>Гостей</span><b id="sumGuests">Не выбрано</b></div>
+            <div class="summary-row"><span>Место</span><b id="sumSeat">Не выбрано</b></div>
+            <div class="summary-row"><span>Повод</span><b id="sumReason">Не выбрано</b></div>
+
+            <h3 style="margin-top: 22px;">Блюда к брони</h3>
+            <div class="order-list" id="orderList">Пока блюда не выбраны.</div>
+            <div class="total-price" id="orderTotal">Итого: 0 сом</div>
+
+            <div class="payment-card" id="paymentInfo">
+              <div>
+                <h3>Онлайн-оплата</h3>
+                <p id="paymentHint">Выберите предоплату в форме и нажмите “Оплатить онлайн”.</p>
+              </div>
+
+              <div class="payment-status" id="paymentStatus">Не оплачено</div>
+
+              <button class="btn btn-primary" type="button" id="openPaymentBtn">Оплатить онлайн</button>
+              <button class="btn btn-outline-light hidden" type="button" id="clearPaymentBtn">Отменить оплату</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="branches">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Филиалы</span>
+          <h2>Карта 2GIS и адреса филиалов</h2>
+          <p>Слева карта, справа адреса. При выборе филиала карта переключается на нужное место.</p>
+        </div>
+
+        <div class="branches-layout">
+          <div class="map-card">
+            <div id="twoGisMap"></div>
+            <p class="map-fallback">
+              Если карта не загрузилась из-за ограничений интернета или браузера, используйте кнопку
+              “Построить маршрут в 2GIS” в карточке филиала.
+            </p>
+          </div>
+
+          <div class="branch-list" id="branchList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gallery">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Галерея</span>
+          <h2>Зал, кабинки и блюда</h2>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+          <button class="gallery-img tall" type="button" data-gallery-title="Главный зал" data-gallery-src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1400&q=90" style="background-image:url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=900&q=80')"></button>
+          <button class="gallery-img" type="button" data-gallery-title="Интерьер ресторана" data-gallery-src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=90" style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=900&q=80')"></button>
+          <button class="gallery-img" type="button" data-gallery-title="Банкетная зона" data-gallery-src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=1400&q=90" style="background-image:url('https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=900&q=80')"></button>
+          <button class="gallery-img" type="button" data-gallery-title="Кабинки" data-gallery-src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1400&q=90" style="background-image:url('https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80')"></button>
+          <button class="gallery-img" type="button" data-gallery-title="Фирменные блюда" data-gallery-src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=1400&q=90" style="background-image:url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=900&q=80')"></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="vacancies">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Вакансии</span>
+          <h2>Открытые вакансии</h2>
+          <p>Выберите вакансию слева — требования появятся в карточке, а справа можно сразу отправить резюме.</p>
+        </div>
+
+        <div class="vacancy-showcase">
+          <div class="vacancy-left">
+            <div class="vacancy-mini-list">
+              <button class="vacancy-mini active" type="button" data-vacancy="0">Официант</button>
+              <button class="vacancy-mini" type="button" data-vacancy="1">Повар</button>
+              <button class="vacancy-mini" type="button" data-vacancy="2">Администратор</button>
+              <button class="vacancy-mini" type="button" data-vacancy="3">Оператор поддержки</button>
+              <button class="vacancy-mini" type="button" data-vacancy="4">Уборщик</button>
+            </div>
+
+            <div class="vacancy-detail-card" id="vacancyDetailCard">
+              <h3 id="vacancyTitle">Официант</h3>
+              <p><b>График:</b> <span id="vacancySchedule">09:00–18:00</span></p>
+              <p><b>Возраст:</b> <span id="vacancyAge">18+</span></p>
+              <p><b>Опыт:</b> <span id="vacancyExperience">от 4 месяцев</span></p>
+              <p><b>Зарплата:</b> <span id="vacancySalary">от 30 000 сом</span></p>
+
+              <div class="vacancy-duties">
+                <h4>Обязанности:</h4>
+                <ul id="vacancyDutiesList">
+                  <li>Встреча гостей</li>
+                  <li>Принятие заказов</li>
+                  <li>Обслуживание столиков</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="vacancy-form-panel">
+            <form id="vacancyForm" class="vacancy-form-grid">
+              <input id="resumeName" type="text" placeholder="ФИО" required />
+              <input id="resumePhone" type="tel" placeholder="Телефон" required />
+
+              <select id="resumePosition" required>
+                <option value="0">Официант</option>
+                <option value="1">Повар</option>
+                <option value="2">Администратор</option>
+                <option value="3">Оператор поддержки</option>
+                <option value="4">Уборщик</option>
+              </select>
+
+              <input id="resumeExperienceInput" type="text" placeholder="Ваш опыт работы" />
+              <textarea id="resumeText" placeholder="Кратко о себе" required></textarea>
+              <textarea id="vacancyRequirements" readonly class="hidden"></textarea>
+
+              <button class="btn btn-primary" type="submit">Отправить резюме</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reviews">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Отзывы</span>
+          <h2>Отзывы гостей</h2>
+        </div>
+
+        <form class="review-form" id="reviewForm">
+          <div class="review-form-grid">
+            <input id="reviewName" type="text" placeholder="Ваше имя" required>
+            <select id="reviewRating" required>
+              <option value="">Оценка</option>
+              <option value="5">5 ★</option>
+              <option value="4">4 ★</option>
+              <option value="3">3 ★</option>
+              <option value="2">2 ★</option>
+              <option value="1">1 ★</option>
+            </select>
+            <textarea id="reviewText" class="review-textarea" placeholder="Напишите отзыв" required></textarea>
+            <button class="btn btn-primary" type="submit">Оставить отзыв</button>
+          </div>
+          <p class="review-note">Оставить отзыв может только вошедший пользователь.</p>
+        </form>
+
+        <div class="review-grid" id="publicReviewsGrid">
+          <div class="review-card"><b>★★★★★</b><p>Удобно выбрали кабинку и заранее заказали блюда.</p><h3>Айбек</h3></div>
+          <div class="review-card"><b>★★★★★</b><p>Красивый зал, вкусный плов и хороший сервис.</p><h3>Али</h3></div>
+          <div class="review-card"><b>★★★★☆</b><p>Понравилось, что можно посмотреть филиалы на карте.</p><h3>Нурбек</h3></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contacts" id="contacts">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Контакты</span>
+          <h2>Связаться с рестораном</h2>
+          <p>Напишите нам или оставьте заявку на бронь. Администратор свяжется с вами.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-card">
+            <p><b>Телефон:</b> <span id="contactPhoneText">+996 706 842 412</span></p>
+            <p><b>WhatsApp:</b> <span id="contactWhatsappText">+996 998 999 059</span></p>
+            <p><b>Email:</b> <span id="contactEmailText">info@akbata.kg</span></p>
+            <p><b>Город:</b> <span id="contactCityText">Бишкек, Кыргызстан</span></p>
+            <a class="btn btn-primary" id="contactWhatsappLink" href="https://wa.me/996700000001" target="_blank" rel="noreferrer">Написать в WhatsApp</a>
+          </div>
+
+          <div class="contact-card">
+            <form id="contactForm" class="form-grid">
+              <input type="text" placeholder="Ваше имя" required />
+              <input type="text" placeholder="Телефон или email" required />
+              <textarea class="field-full" placeholder="Ваш вопрос"></textarea>
+              <button class="btn btn-primary field-full" type="submit">Отправить сообщение</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- МОДАЛЬНОЕ ОКНО ВХОДА И РЕГИСТРАЦИИ -->
+  <div class="auth-modal" id="authModal">
+    <div class="auth-box">
+      <button class="auth-close" type="button" id="closeAuthModal">×</button>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" type="button" data-auth-tab="login">Вход</button>
+        <button class="auth-tab" type="button" data-auth-tab="register">Регистрация</button>
+      </div>
+
+      <form class="auth-form active" id="loginForm">
+        <h3>Вход в аккаунт</h3>
+        <p>Администратор входит здесь же через специальный логин и пароль.</p>
+
+        <input id="loginUsername" type="text" placeholder="Логин или телефон" required />
+        <div class="password-field"><input id="loginPassword" type="password" placeholder="Пароль" required /><button type="button" data-toggle-password="loginPassword">👁</button></div>
+
+        <button class="btn btn-primary" type="submit">Войти</button>
+      </form>
+
+      <form class="auth-form" id="registerForm">
+        <h3>Регистрация пользователя</h3>
+        <p>Регистрация создаёт обычный пользовательский аккаунт без доступа к админ-панели.</p>
+
+        <input id="regName" type="text" placeholder="ФИО" required />
+        <input id="regPhone" type="tel" placeholder="+996XXXXXXXXX" required />
+        <input id="regEmail" type="email" placeholder="Email" required />
+        <div class="password-field"><input id="regPassword" type="password" placeholder="Пароль" required /><button type="button" data-toggle-password="regPassword">👁</button></div>
+        <input id="regAge" type="number" min="10" max="100" placeholder="Возраст" required />
+
+        <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+      </form>
+
+      <div class="auth-status" id="authStatus"></div>
+    </div>
+  </div>
+
+  <!-- АДМИН-ПАНЕЛЬ. ОНА НЕ ВИДНА, ПОКА АДМИН НЕ ВОЙДЁТ ЧЕРЕЗ "ВХОД" -->
+   <!-- АДМИН-ПАНЕЛЬ -->
+<div class="hall-admin-modal" id="hallAdminModal">
+  <div class="hall-admin-box admin-dashboard-box">
+    <div class="hall-admin-head">
+      <div>
+        <h3>Административная панель</h3>
+      </div>
+
+      <button type="button" id="closeHallAdmin">×</button>
+    </div>
+
+    <!-- СПИСОК РЕДАКТИРУЕМЫХ РАЗДЕЛОВ -->
+    <div class="admin-tabs admin-category-tabs">
+      <button class="admin-tab active" type="button" data-admin-tab="booking">Заявки</button>
+      <button class="admin-tab" type="button" data-admin-tab="about">О ресторане</button>
+      <button class="admin-tab" type="button" data-admin-tab="menu">Меню</button>
+      <button class="admin-tab" type="button" data-admin-tab="scheme">Выбор места</button>
+      <button class="admin-tab" type="button" data-admin-tab="booking">Бронирование</button>
+      <button class="admin-tab" type="button" data-admin-tab="payment">Оплата</button>
+      <button class="admin-tab" type="button" data-admin-tab="branches">Филиалы / карта</button>
+      <button class="admin-tab" type="button" data-admin-tab="vacancies">Вакансии</button>
+      <button class="admin-tab" type="button" data-admin-tab="resumes">Резюме</button>
+      <button class="admin-tab" type="button" data-admin-tab="contacts">Контакты</button>
+      <button class="admin-tab" type="button" data-admin-tab="gallery">Галерея</button>
+    </div>
+
+    <!-- ВКЛАДКА: О РЕСТОРАНЕ -->
+    <div class="admin-tab-panel" id="adminAboutPanel">
+      <div class="admin-simple-card">
+        <h4>О ресторане</h4>
+        <p class="admin-hint">Измените главный текст раздела «О ресторане».</p>
+        <label>Заголовок
+          <input type="text" id="adminAboutTitle" placeholder="Заголовок раздела">
+        </label>
+        <label>Описание
+          <textarea id="adminAboutText" placeholder="Описание ресторана"></textarea>
+        </label>
+        <button class="btn btn-primary" type="button" id="saveAboutBtn">Сохранить</button>
+      </div>
+    </div>
+
+    <!-- ВКЛАДКА: БРОНИРОВАНИЕ -->
+    <div class="admin-tab-panel active" id="adminDashboardPanel">
+      <div class="admin-topbar">
+        <div>
+          <h4>Панель управления</h4>
+          <p>Просмотр пользователей, заявок, оплат и резюме.</p>
+        </div>
+        <button class="btn btn-outline-admin" type="button" id="clearBookingsBtn">Очистить заявки</button>
+      </div>
+
+      <div class="admin-stats" id="adminStats"></div>
+
+      <div class="admin-panel-grid">
+        <div class="admin-data-card admin-wide">
+          <div class="admin-data-head">
+            <div>
+              <h4>Заявки на бронирование</h4>
+              <p>Администратор может принять, отклонить или удалить заявку.</p>
+            </div>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table admin-bookings-table">
+              <thead>
+                <tr>
+                  <th>№</th>
+                  <th>Клиент</th>
+                  <th>Дата / время</th>
+                  <th>Место</th>
+                  <th>Заказ</th>
+                  <th>Оплата</th>
+                  <th>Статус</th>
+                  <th>Действие</th>
+                </tr>
+              </thead>
+              <tbody id="adminBookingsList">
+                <tr><td colspan="8" class="admin-empty">Пока заявок нет.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-data-card admin-wide">
+          <div class="admin-data-head">
+            <div>
+              <h4>Пользователи</h4>
+              <p>Количество и данные всех зарегистрированных пользователей.</p>
+            </div>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table admin-users-table">
+              <thead>
+                <tr>
+                  <th>ФИО</th>
+                  <th>Email</th>
+                  <th>Телефон</th>
+                  <th>Возраст</th>
+                  <th>Карта</th>
+                  <th>Действие</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersList">
+                <tr><td colspan="6" class="admin-empty">Пользователей пока нет.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-data-card">
+          <div class="admin-data-head"><h4>Отзывы</h4></div>
+          <div class="admin-small-list" id="adminReviewsList">Отзывов пока нет.</div>
+        </div>
+
+        <div class="admin-data-card">
+          <div class="admin-data-head"><h4>Резюме</h4></div>
+          <div class="admin-small-list" id="adminResumesList">Резюме пока нет.</div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ВКЛАДКА: РЕЗЮМЕ -->
+    <div class="admin-tab-panel" id="adminResumesPanel">
+      <div class="admin-topbar">
+        <div>
+          <h4>Резюме кандидатов</h4>
+          <p>Здесь отображаются все резюме, отправленные пользователями из раздела «Вакансии».</p>
+        </div>
+      </div>
+
+      <div class="admin-data-card admin-wide">
+        <div class="admin-data-head">
+          <div>
+            <h4>Список резюме</h4>
+            <p>Администратор может просматривать и удалять отправленные резюме.</p>
+          </div>
+        </div>
+        <div class="admin-small-list admin-resume-page-list" id="adminResumesPageList">
+          Резюме пока нет.
+        </div>
+      </div>
+    </div>
+
+    <!-- ВКЛАДКА: РЕДАКТОР СХЕМЫ СТОЛОВ -->
+    <div class="admin-tab-panel" id="adminSchemePanel">
+      <div class="hall-admin-grid">
+        <form id="hallSeatForm" class="hall-seat-form">
+          <input type="hidden" id="editSeatIdOld" />
+
+          <label>
+            Номер / ID
+            <input type="text" id="editSeatId" placeholder="Например: 24" required />
+          </label>
+
+          <label>
+            Название
+            <input type="text" id="editSeatName" placeholder="Например: Стол №24" required />
+          </label>
+
+          <label>
+            Зона
+            <input type="text" id="editSeatZone" placeholder="Основной зал / 2 этаж / VIP зона" required />
+          </label>
+
+          <label>
+            Вместимость
+            <input type="number" id="editSeatCapacity" min="1" placeholder="4" required />
+          </label>
+
+          <label>
+            Статус
+            <select id="editSeatStatus" required>
+              <option value="free">Свободно</option>
+              <option value="vip">VIP / кабинка</option>
+              <option value="booked">Занято</option>
+            </select>
+          </label>
+
+          <label>
+            Позиция X слева
+            <input type="number" id="editSeatX" placeholder="45" />
+          </label>
+
+          <label>
+            Позиция справа
+            <input type="number" id="editSeatRight" placeholder="Оставьте пустым" />
+          </label>
+
+          <label>
+            Позиция Y сверху
+            <input type="number" id="editSeatY" placeholder="70" required />
+          </label>
+
+          <div class="hall-admin-actions">
+            <button class="btn btn-primary" type="submit">
+              Сохранить место
+            </button>
+
+            <button class="btn btn-dark" type="button" id="newSeatBtn">
+              Новый стол
+            </button>
+
+            <button class="btn btn-red" type="button" id="deleteSeatBtn">
+              Удалить выбранный
+            </button>
+
+            <button class="btn btn-outline-admin" type="button" id="resetHallBtn">
+              Сбросить схему
+            </button>
+          </div>
+        </form>
+
+        <div class="hall-admin-list-wrap">
+          <h4>Список мест</h4>
+
+          <p class="admin-hint">
+            Чтобы сдвинуть столик: открой вкладку «Редактор схемы», затем потяни столик мышкой на схеме зала.
+          </p>
+
+          <div class="hall-admin-list" id="hallAdminList">
+            Места пока не загружены.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ВКЛАДКА: РЕДАКТОР МЕНЮ -->
+    <div class="admin-tab-panel" id="adminMenuPanel">
+      <div class="admin-menu-grid">
+        <form id="adminMenuForm" class="admin-menu-form">
+          <input type="hidden" id="editMenuIdOld" />
+
+          <label>
+            ID блюда
+            <input type="number" id="editMenuId" placeholder="Например: 14" required />
+          </label>
+
+          <label>
+            Название блюда
+            <input type="text" id="editMenuName" placeholder="Например: Куурдак" required />
+          </label>
+
+          <label>
+            Категория
+            <select id="editMenuCategory" required>
+              <option value="first">Первое блюдо</option>
+              <option value="second">Второе блюдо</option>
+              <option value="salads">Салаты</option>
+              <option value="snacks">Закуски</option>
+              <option value="shashlyk">Шашлыки</option>
+              <option value="drinks">Напитки</option>
+              <option value="tea">Чай</option>
+              <option value="desserts">Десерты</option>
+            </select>
+          </label>
+
+          <label>
+            Цена
+            <input type="number" id="editMenuPrice" placeholder="350" required />
+          </label>
+
+          <label>
+            Вес / объём
+            <input type="text" id="editMenuWeight" placeholder="450 г" required />
+          </label>
+
+          <label>
+            Время приготовления
+            <input type="text" id="editMenuCookTime" placeholder="28 мин" />
+          </label>
+
+          <label>
+            Порций
+            <input type="number" id="editMenuServings" placeholder="6" min="1" />
+          </label>
+
+          <label>
+            Состав
+            <input type="text" id="editMenuComposition" placeholder="мясо, картофель, лук" required />
+          </label>
+
+          <label>
+            Теги через запятую
+            <input type="text" id="editMenuTags" placeholder="halal, hit, new" />
+          </label>
+
+          <label>
+            Описание
+            <textarea id="editMenuDesc" placeholder="Краткое описание блюда" required></textarea>
+          </label>
+
+          <label>
+            Ссылка на фото
+            <input type="url" id="editMenuImg" placeholder="https://example.com/photo.jpg" required />
+          </label>
+
+          <label>
+            Ингредиенты через запятую
+            <textarea id="editMenuIngredients" placeholder="Паста, соль, соус, сыр, масло, специи"></textarea>
+          </label>
+
+          <label>
+            Инструкция через точку с запятой
+            <textarea id="editMenuInstructions" placeholder="Отварите пасту; Приготовьте соус; Смешайте; Подавайте горячим"></textarea>
+          </label>
+
+          <div class="hall-admin-actions">
+            <button class="btn btn-primary" type="submit">
+              Сохранить блюдо
+            </button>
+
+            <button class="btn btn-dark" type="button" id="newMenuItemBtn">
+              Новое блюдо
+            </button>
+
+            <button class="btn btn-red" type="button" id="deleteMenuItemBtn">
+              Удалить выбранное
+            </button>
+
+            <button class="btn btn-outline-admin" type="button" id="resetMenuBtn">
+              Сбросить меню
+            </button>
+          </div>
+        </form>
+
+        <div class="admin-menu-list-wrap">
+          <h4>Все блюда</h4>
+
+          <p class="admin-hint">
+            Нажмите «Редактировать», чтобы изменить блюдо, или «Удалить», чтобы убрать его из меню.
+          </p>
+
+          <div class="admin-menu-list" id="adminMenuList">
+            Меню пока не загружено.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-tab-panel" id="adminPaymentPanel">
+      <div class="admin-simple-card">
+        <h4>Оплата</h4>
+        <p class="admin-hint">Измените подсказку в блоке оплаты.</p>
+        <label>Текст оплаты
+          <textarea id="adminPaymentText" placeholder="Текст для блока оплаты"></textarea>
+        </label>
+        <button class="btn btn-primary" type="button" id="savePaymentBtn">Сохранить</button>
+      </div>
+    </div>
+
+    <div class="admin-tab-panel" id="adminBranchesPanel">
+      <div class="admin-simple-card">
+        <h4>Филиалы и карта</h4>
+        <p class="admin-hint">Здесь можно изменить адрес, телефон и координаты филиала. Карта 2GIS обновится после сохранения и перезагрузки страницы.</p>
+        <label>Филиал
+          <select id="adminBranchIndex"></select>
+        </label>
+        <label>Название филиала
+          <input type="text" id="adminBranchName">
+        </label>
+        <label>Адрес
+          <input type="text" id="adminBranchAddress">
+        </label>
+        <label>Телефон
+          <input type="text" id="adminBranchPhone">
+        </label>
+        <label>График
+          <input type="text" id="adminBranchTime">
+        </label>
+        <label>Координата latitude
+          <input type="number" step="0.000001" id="adminBranchLat">
+        </label>
+        <label>Координата longitude
+          <input type="number" step="0.000001" id="adminBranchLng">
+        </label>
+        <label>Ссылка 2GIS
+          <input type="url" id="adminBranchUrl">
+        </label>
+        <button class="btn btn-primary" type="button" id="saveBranchBtn">Сохранить филиал</button>
+      </div>
+    </div>
+
+    <div class="admin-tab-panel" id="adminVacanciesPanel">
+      <div class="admin-simple-card">
+        <h4>Вакансии</h4>
+        <p class="admin-hint">Редактирование списка вакансий можно расширить по этому шаблону. Сейчас вакансии берутся из массива в script.js.</p>
+      </div>
+    </div>
+
+    <div class="admin-tab-panel" id="adminContactsPanel">
+      <div class="admin-simple-card">
+        <h4>Контакты</h4>
+        <label>Телефон
+          <input type="text" id="adminContactPhone" placeholder="+996 700 000 001">
+        </label>
+        <label>WhatsApp
+          <input type="text" id="adminContactWhatsapp" placeholder="+996 700 000 001">
+        </label>
+        <label>Email
+          <input type="email" id="adminContactEmail" placeholder="info@akbata.kg">
+        </label>
+        <label>Город
+          <input type="text" id="adminContactCity" placeholder="Бишкек, Кыргызстан">
+        </label>
+        <button class="btn btn-primary" type="button" id="saveContactsBtn">Сохранить контакты</button>
+      </div>
+    </div>
+
+    <div class="admin-tab-panel" id="adminGalleryPanel">
+      <div class="admin-simple-card">
+        <h4>Галерея</h4>
+        <p class="admin-hint">Выберите фото и замените название или ссылку на изображение.</p>
+        <label>Фото
+          <select id="adminGalleryIndex"></select>
+        </label>
+        <label>Название фото
+          <input type="text" id="adminGalleryTitle">
+        </label>
+        <label>Ссылка на фото
+          <input type="url" id="adminGallerySrc">
+        </label>
+        <button class="btn btn-primary" type="button" id="saveGalleryBtn">Сохранить фото</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- ОПЛАТА -->
+  <div class="payment-modal" id="paymentModal">
+    <div class="payment-box">
+      <button class="auth-close" type="button" id="closePaymentModal">×</button>
+
+      <h3>Онлайн-оплата</h3>
+      <p class="payment-note">Это демо-оплата для учебного сайта. Реальное списание денег не происходит.</p>
+
+      <div class="payment-total-box">
+        <span>К оплате</span>
+        <b id="paymentAmountText">0 сом</b>
+      </div>
+
+      <form id="paymentForm" class="payment-form">
+  <label>
+    Выберите карту
+    <select id="paymentMethod" required>
+      <option value="">Выберите способ оплаты</option>
+      <option value="visa">Visa</option>
+      <option value="mastercard">MasterCard</option>
+      <option value="elcart">Элкарт</option>
+      <option value="mbank">Мбанк карта</option>
+      <option value="optima">Optima Bank карта</option>
+      <option value="bakai">Бакай Банк карта</option>
+      <option value="companion">Компаньон Банк карта</option>
+      <option value="finca">Финка Банк карта</option>
+    </select>
+  </label>
+
+  <div class="payment-card-fields" id="cardFields">
+    <input id="cardNumber" type="text" inputmode="numeric" maxlength="19" placeholder="Номер карты: 0000 0000 0000 0000" required />
+    <input id="cardDate" type="text" maxlength="5" placeholder="MM/YY" required />
+    <input id="cardCvv" type="password" inputmode="numeric" maxlength="3" placeholder="CVV" required />
+  </div>
+
+  <input id="payerName" type="text" placeholder="Имя владельца карты" required />
+
+  <button class="btn btn-primary" type="submit">Подтвердить оплату</button>
+</form>
+    </div>
+  </div>
+
+  <button class="floating-cart-btn" type="button" id="floatingCartBtn" aria-label="Корзина">🛒</button>
+  <button class="whatsapp-btn" type="button" id="whatsappFloat">☘</button>
+  <button class="chat-btn" type="button" id="chatToggle">💬</button>
+
+  <div class="chat-box" id="chatBox">
+    <div class="chat-head">Онлайн-поддержка</div>
+    <div class="chat-body" id="chatBody">
+      <p><b>Админ:</b> Здравствуйте! Чем можем помочь?</p>
+    </div>
+    <div class="chat-input">
+      <input id="chatMessage" type="text" placeholder="Напишите сообщение..." />
+      <button type="button" id="sendChat">➤</button>
+    </div>
+  </div>
+
+
+  <div class="floating-cart-modal" id="floatingCartModal" aria-hidden="true">
+    <div class="floating-cart-box">
+      <button class="floating-cart-close" type="button" id="floatingCartClose">×</button>
+      <h3>🛒 Корзина</h3>
+      <div id="floatingCartList" class="floating-cart-list">Корзина пустая.</div>
+      <div id="floatingCartTotal" class="floating-cart-total">Итого: 0 сом</div>
+      <a class="btn btn-primary" href="#booking" id="floatingCartBooking">Перейти к бронированию</a>
+    </div>
+  </div>
+
+  <div class="success-modal" id="successModal">
+    <div class="success-box">
+      <div class="success-icon">✓</div>
+      <h3>Заявка принята!</h3>
+      <p id="successText">Администратор свяжется с вами в ближайшее время.</p>
+
+      <div class="hero-actions" style="justify-content:center; margin-top: 0;">
+        <a class="btn btn-primary" href="https://wa.me/996700000001" target="_blank" rel="noreferrer">WhatsApp</a>
+        <button class="btn btn-dark" type="button" id="closeSuccess">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="image-viewer-modal" id="imageViewerModal" aria-hidden="true">
+    <div class="image-viewer-box">
+      <button class="image-viewer-close" type="button" id="closeImageViewer">×</button>
+      <img id="imageViewerImg" src="" alt="Фото" />
+      <h3 id="imageViewerTitle">Фото</h3>
+    </div>
+  </div>
+
+  <div class="seat-preview-modal" id="seatPreviewModal" aria-hidden="true">
+    <div class="seat-preview-box">
+      <button class="seat-preview-close" type="button" id="closeSeatPreview">×</button>
+
+      <div class="seat-preview-img" id="seatPreviewImg"></div>
+
+      <div class="seat-preview-content">
+        <span class="eyebrow">Выбор места</span>
+        <h3 id="seatPreviewTitle">Столик</h3>
+        <p id="seatPreviewInfo">Информация о месте</p>
+
+        <div class="seat-preview-actions">
+          <button class="btn btn-dark" type="button" id="cancelSeatPreview">Отмена</button>
+          <button class="btn btn-primary" type="button" id="confirmSeatPreview">Подтвердить и перейти к бронированию</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <footer>
+    <p>© 2026 Ресторан «АК БАТА». Онлайн-бронирование столиков и кабинок.</p>
+  </footer>
+
+  <!-- ЛИЧНЫЙ КАБИНЕТ ПОЛЬЗОВАТЕЛЯ -->
+<div class="profile-modal" id="profileModal">
+  <div class="profile-box">
+    <button class="profile-close" type="button" id="closeProfileModal">×</button>
+
+    <div class="profile-layout">
+      <div class="profile-left">
+        <div class="profile-avatar" id="profileAvatar">
+          <span id="profileAvatarLetter">П</span>
+        </div>
+
+        <label class="profile-photo-btn">
+          📷 Изменить фото
+          <input id="profilePhotoInput" type="file" accept="image/*">
+        </label>
+      </div>
+
+      <div class="profile-main">
+        <div class="profile-head">
+          <div>
+            <h2>👤 Личный кабинет</h2>
+            <h3 id="profileName">Пользователь</h3>
+            <p>✉️ <span id="profileEmail">Не указано</span></p>
+            <p><b>Роль:</b> <span id="profileRole">Пользователь</span></p>
+          </div>
+
+          <span class="profile-badge" id="profileBadge">Пользователь</span>
+        </div>
+
+        <div class="profile-stats">
+          <div class="profile-stat-card">
+            <b id="profileBookingsCount">0</b>
+            <span>Мои брони</span>
+          </div>
+
+          <div class="profile-stat-card">
+            <b id="profileOrdersCount">0</b>
+            <span>Блюд выбрано</span>
+          </div>
+
+          <div class="profile-stat-card">
+            <b id="profilePaymentsCount">0</b>
+            <span>Оплаты</span>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <a class="profile-action-btn" href="#booking" id="profileGoBooking">📅 Забронировать</a>
+          <button class="profile-action-btn" type="button" id="profileLogoutBtn">🚪 Выйти</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-bottom">
+      <div class="profile-card">
+        <h3>🛒 Мои брони</h3>
+        <div class="profile-list" id="profileBookingsList">
+          Броней пока нет.
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <h3>⭐ Мои данные</h3>
+        <div class="profile-info-box">
+          <p><b>Имя:</b> <span id="profileInfoName">Пользователь</span></p>
+          <p><b>Email:</b> <span id="profileInfoEmail">Не указано</span></p>
+          <p><b>Телефон:</b> <span id="profileInfoPhone">Не указано</span></p>
+          <p><b>Возраст:</b> <span id="profileInfoAge">Не указано</span></p>
+          <p><b>Статус:</b> активный пользователь</p>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <h3>💳 Привязка карты</h3>
+        <div class="profile-card-form">
+          <input id="profileCardNumber" type="text" inputmode="numeric" maxlength="19" placeholder="Номер карты: 0000 0000 0000 0000">
+          <input id="profileCardHolder" type="text" placeholder="ФИО владельца карты">
+          <input id="profileCardDate" type="text" maxlength="5" placeholder="Срок: MM/YY">
+          <button class="profile-action-btn profile-full-btn" type="button" id="profileSaveCardBtn">Привязать карту</button>
+          <p class="profile-card-status" id="profileCardStatus">Карта не привязана</p>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <h3>📝 Оставить заявку</h3>
+        <form id="profileApplicationForm" class="profile-card-form">
+          <select id="profileApplicationType" required>
+            <option value="Бронирование">Бронирование</option>
+            <option value="Банкет">Банкет</option>
+            <option value="Вопрос администратору">Вопрос администратору</option>
+          </select>
+          <input id="profileApplicationDate" type="date" required>
+          <input id="profileApplicationGuests" type="number" min="1" placeholder="Количество гостей" required>
+          <textarea id="profileApplicationText" placeholder="Комментарий к заявке" required></textarea>
+          <button class="profile-action-btn profile-full-btn" type="submit">Отправить заявку</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="script.js"></script>
+</body>
+</html>
